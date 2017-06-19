@@ -1,0 +1,124 @@
+package whatever;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+//import javax.swing.JOptionPane;
+
+public class Doctor extends User {
+
+private String specializtion;
+private ArrayList<String> symptomList = new ArrayList<String>();
+private ArrayList<String> diagnosticList = new ArrayList<String>();
+private ArrayList<String> medList = new ArrayList<String>();
+private ArrayList<Patient> patientList = new ArrayList<Patient>();
+String a;
+String b;
+
+public Doctor(String fNameD, String lNameD, String ssnD, char gender) {
+super(fNameD, lNameD, ssnD, gender);
+// links the private info above to the items below
+loadDiagnosticData();
+loadPatientData();
+
+}
+
+public void loadDiagnosticData() {
+
+try {
+FileReader bush = new FileReader("data/diagnostic_data.txt");
+BufferedReader llit = new BufferedReader(bush);
+String line = null;
+
+while ((line = llit.readLine()) != null) {
+String[] lineArray = line.split(",");
+
+symptomList.add(lineArray[0]);
+diagnosticList.add(lineArray[1]);
+medList.add(lineArray[2]);
+}
+} catch (IOException e) {
+System.out.println(e.getMessage());
+
+}
+}
+
+public void loadPatientData() {
+
+try {// open try
+FileReader bush = new FileReader("data/patient_list.txt");
+BufferedReader llit = new BufferedReader(bush);
+String line = null;
+while ((line = llit.readLine()) != null) {
+String[] lineArray = line.split(",|\\;");
+Patient patient = new Patient(lineArray[1], lineArray[0],
+lineArray[6], lineArray[7].charAt(0),
+Double.parseDouble(lineArray[8]),
+Double.parseDouble(lineArray[9]));
+
+for (int i = 10; i < lineArray.length; i++) {
+patient.setSymptom(lineArray[i]);
+}
+patient.setStreetAddress(lineArray[2]);
+patient.setCity(lineArray[3]);
+patient.setState(lineArray[4]);
+patient.setZip(lineArray[5]);
+this.patientList.add(patient);
+
+} // close while
+
+} catch (IOException e) {
+System.out.println(e.getMessage());
+}
+
+}
+
+// if true continue if false repeat the steps till true
+public void prescribe(Patient patient) { // start prescribe(Patient
+// patient)
+
+// goes thru the array and sets the output to the user.
+for (String s : patient.getSymptom()) {
+System.out.println(s);
+for (int i = 0; i < symptomList.size(); i++) {// start outer loop
+// for symptom
+// matching
+if (s.equalsIgnoreCase(symptomList.get(i))) {
+Diagnoses sickhead = new Diagnoses(i, diagnosticList.get(i));
+Medication happyPills = new Medication(i, medList.get(i));
+patient.setDiagnoses(sickhead);
+patient.setMedication(happyPills);
+}
+
+} // end for loop
+}
+
+} // end prescribe(Patient patient)
+
+public String getSpecializtion() {
+return specializtion;
+}
+
+public void setSpecializtion(String specializtion) {
+this.specializtion = specializtion;
+}
+
+public ArrayList<String> getSymptomList() {
+return symptomList;
+}
+
+public ArrayList<String> getDiagnosticList() {
+return diagnosticList;
+}
+
+public ArrayList<String> getMedList() {
+return medList;
+}
+
+public ArrayList<Patient> getPatientList() {
+return patientList;
+}
+
+}

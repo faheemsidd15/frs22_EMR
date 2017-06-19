@@ -1,0 +1,11 @@
+Smith,John,743 Evergreen Street,Pittsburgh,PA,15221,696-69-6969,m,168.0,72.0,Headache;Cough;Tumor;fever;headache;;;;;headache;;;;;;
+Jones,Daniel,134 Phillips Avenue,Pittsburgh,PA,15218,222-22-2222,m,197.0,68.0,Fever;Cough;Chest Pain;;;;;;;;;;
+Everett,Samantha,456 Hobart Street,Pittsburgh,PA,15217,333-33-3333,f,134.0,60.0,Mouth Sores;Swelling;;;;;;;;;;
+Brown,Jason,7645 Liberty Avenue,Pittsburgh,PA,15222,444-44-4444,m,236.0,70.0,Acid Reflux;Hair Loss;;;;;;;;;;
+Lawrence,Jane,631 Bartlett Street,Pittsburgh,PA,15217,555-55-5555,f,150.0,65.0,Acid Reflux;Stomach Ache;;;;;;;;;;
+Doe,Laura,490 Brownsville Road,Pittsburgh,PA,15228,666-66-6666,f,131.0,67.0,Chest Pain;Back Pain;Headache;;;;;;;;;;
+Lee,Rosaline,6140 Cedar Road,Pittsburgh,PA,15228,777-77-7777,m,106.0,59.0,Back Pain;Fever;;;;;;;;;;
+Malley,Joshua,105 Forward Avenue,Pittsburgh,PA,15218,888-88-8888,m,301.0,75.0,Headache;Fever;;;;;;;;;;
+Marcus,Norman,567 Whipple Street,Pittsburgh,PA,15218,999-99-9999,m,195.0,65.0,Chest Pain;;;;;;;;;;
+Lawson,Frederick,634 Forbes Avenue,Pittsburgh,PA,15222,000-00-0000,m,150.0,60.0,Cough;Nasal Discharge;Headache;;;;;;;;;;
+Rana,Hassan,1725 Miller ave,Pittsburgh,PA,15146,111-11-1111,m,150.0,60.0,cough;fever;headache;;;;;;;;;;

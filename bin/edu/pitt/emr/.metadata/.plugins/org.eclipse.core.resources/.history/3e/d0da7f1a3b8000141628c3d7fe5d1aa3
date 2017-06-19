@@ -1,0 +1,421 @@
+package whatever;
+
+import java.awt.EventQueue;
+import java.awt.Window;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.swing.JTextArea;
+
+public class EMR {
+
+/* Global variables representing SWING controls for the parent frame */
+
+private JFrame EMRFrame;
+
+private JLabel lblSelectPatient;
+private JLabel lblSymptoms;
+private JLabel lblEnterSymptoms;
+private JLabel lblPatientProfile;
+
+private JTextField txtTextBoxSymptoms;
+private JTextField txtTextBoxEnterSymptoms;
+private JTextArea txtTextAreaPatientProfile;
+
+private JComboBox cboPatient;
+
+private JButton btnEdit;
+private JButton btnDiagnoseandPrescribe;
+private JButton btnSaveAllPatientstoFile;
+
+private JFrame EditPatientInfomationFrame;
+private JButton btnButtonExample1;
+private JButton btnButtonSaveAllPatientTopFile;
+
+/*
+ * Global variables representing SWING controls for the child (popup) frame
+ * private JFrame EditPatientInformationFrame;
+ */
+
+private JLabel lblPatientFirstName;
+private JLabel lblPatientLastName;
+private JLabel lblPatientAddress;
+private JLabel lblPatientCity;
+private JLabel lblPatientState;
+private JLabel lblPatientZip;
+private JLabel lblPatientSSN;
+private JLabel lblPatientHeight;
+private JLabel lblPatientWeight;
+private JLabel lblPatientGender;
+private JLabel lblPatientSymptomsList;
+
+private JButton btnPatientEditSave;
+private JButton btnPatientEditCancel;
+
+private JTextField txtTextBoxFirstName;
+private JTextField txtTextBoxLastName;
+private JTextField txtTextBoxAddress;
+private JTextField txtTextBoxCity;
+private JTextField txtTextBoxState;
+private JTextField txtTextBoxZip;
+private JTextField txtTextBoxSSN;
+private JTextField txtTextBoxEnterHeight;
+private JTextField txtTextBoxPatientWeight;
+private JTextField txtTextBoxGender;
+private JTextField txtTextBoxEPPSymptoms;
+
+private Doctor doc;
+
+/**
+ * Launch the application.
+ */
+public static void main(String[] args) {
+EMR window = new EMR();
+window.EMRFrame.setVisible(true);
+}
+
+/**
+ * Create the application.
+ */
+public EMR() {
+doc = new Doctor("John", "Doe", "111-11-1111", 'f');
+initParentFrame();
+initEditPatientInfomation();
+}
+
+/**
+ * Initialize the contents of the frame.
+ */
+private void initParentFrame() {
+
+// Builds the frame for the ERM frame
+EMRFrame = new JFrame("EMR");
+EMRFrame.setBounds(100, 100, 650, 600);
+EMRFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+EMRFrame.getContentPane().setLayout(null);
+
+lblSelectPatient = new JLabel("Select Patient:");
+lblSelectPatient.setBounds(20, 20, 125, 20);
+EMRFrame.getContentPane().add(lblSelectPatient);
+
+cboPatient = new JComboBox();
+cboPatient.setBounds(
+lblSelectPatient.getX() + lblSelectPatient.getWidth() + 10,
+lblSelectPatient.getY(), 250, 30);
+// lets the user pick the patient to work
+for (Patient patient : doc.getPatientList()) {
+cboPatient.addItem(patient);
+// System.out.println(patient +"cboPatient = new JComboBox(); ");
+}
+EMRFrame.getContentPane().add(cboPatient);
+cboPatient.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+Patient p = (Patient) cboPatient.getSelectedItem();
+System.out.println(p + " =Selected Patient");
+
+txtTextBoxSymptoms.setText(p.getSymptom().toString());
+}
+});
+
+// start the edit butt
+
+btnEdit = new JButton("Edit");
+btnEdit.setBounds(cboPatient.getX() + cboPatient.getWidth() + 10,
+cboPatient.getY(), 50, 30);
+EMRFrame.getContentPane().add(btnEdit);
+btnEdit.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+System.out.println("You just clicked a button!");
+EditPatientInfomationFrame.setVisible(true);
+Patient p = (Patient) cboPatient.getSelectedItem();
+txtTextBoxFirstName.setText(p.getFirstName());
+txtTextBoxLastName.setText(p.getLastName());
+txtTextBoxAddress.setText(p.getStreetAddress());
+txtTextBoxCity.setText(p.getCity());
+txtTextBoxState.setText(p.getState());
+txtTextBoxZip.setText(p.getZip());
+txtTextBoxSSN.setText(p.getSsn());
+txtTextBoxEnterHeight.setText(Double.toString(p.getHeight()));
+txtTextBoxPatientWeight.setText(Double.toString(p.getWeight()));
+txtTextBoxGender.setText(Character.toString(p.getGender()));
+txtTextBoxEPPSymptoms.setText(p.getSymptom().toString());
+}
+});
+
+lblSymptoms = new JLabel("Symptoms:");
+lblSymptoms.setBounds(20,
+lblSelectPatient.getY() + lblSelectPatient.getHeight() + 10,
+200, 20);
+EMRFrame.getContentPane().add(lblSymptoms);
+
+txtTextBoxSymptoms = new JTextField();
+txtTextBoxSymptoms.setBounds(cboPatient.getX(), cboPatient.getY()
++ cboPatient.getHeight() + 10, 310, 100);
+EMRFrame.getContentPane().add(txtTextBoxSymptoms);
+
+lblEnterSymptoms = new JLabel("Enter Symptoms:");
+lblEnterSymptoms.setBounds(20, txtTextBoxSymptoms.getY()
++ txtTextBoxSymptoms.getHeight() + 15, 200, 20);
+EMRFrame.getContentPane().add(lblEnterSymptoms);
+
+txtTextBoxEnterSymptoms = new JTextField();
+txtTextBoxEnterSymptoms
+.setBounds(txtTextBoxSymptoms.getX(), txtTextBoxSymptoms.getY()
++ txtTextBoxSymptoms.getHeight() + 15, 310, 25);
+EMRFrame.getContentPane().add(txtTextBoxEnterSymptoms);
+
+btnDiagnoseandPrescribe = new JButton("Diagnose and Prescribe");
+btnDiagnoseandPrescribe.setBounds(
+txtTextBoxSymptoms.getX() + 115,
+txtTextBoxEnterSymptoms.getY()
++ txtTextBoxEnterSymptoms.getHeight() + 10, 200, 30);
+EMRFrame.getContentPane().add(btnDiagnoseandPrescribe);
+btnDiagnoseandPrescribe.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+
+Patient p = (Patient) cboPatient.getSelectedItem();
+p.setSymptom(txtTextBoxEnterSymptoms.getText());
+
+doc.prescribe(p);
+txtTextAreaPatientProfile.setText(p.getProfile());
+}
+});
+lblPatientProfile = new JLabel("Patient Profile:");
+lblPatientProfile.setBounds(20, btnDiagnoseandPrescribe.getY()
++ btnDiagnoseandPrescribe.getHeight() + 15, 125, 20);
+EMRFrame.getContentPane().add(lblPatientProfile);
+
+txtTextAreaPatientProfile = new JTextArea();
+txtTextAreaPatientProfile.setBounds(
+txtTextBoxSymptoms.getX(),
+btnDiagnoseandPrescribe.getY()
++ btnDiagnoseandPrescribe.getHeight() + 15, 310, 200);
+EMRFrame.getContentPane().add(txtTextAreaPatientProfile);
+
+btnButtonSaveAllPatientTopFile = new JButton("Save All Patient to File");
+btnButtonSaveAllPatientTopFile.setBounds(
+btnDiagnoseandPrescribe.getX(),
+txtTextAreaPatientProfile.getY()
++ txtTextAreaPatientProfile.getHeight() + 10, 200, 30);
+EMRFrame.getContentPane().add(btnButtonSaveAllPatientTopFile);
+btnButtonSaveAllPatientTopFile.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+String output = "";
+try {
+BufferedWriter out = new BufferedWriter(new FileWriter(
+"data/patient_data.txt"));
+for (Patient p : doc.getPatientList()) {
+output = p.getLastName() + ",";
+output += p.getFirstName() + ",";
+output += p.getStreetAddress() + ",";
+output += p.getCity() + ",";
+output += p.getState() + ",";
+output += p.getZip() + ",";
+output += p.getSsn() + ",";
+output += p.getGender() + ",";
+output += p.getWeight() + ",";
+output += p.getHeight() + ",";
+
+// symptoms
+String symptomList = "";
+for (String s : p.getSymptom()) {
+symptomList += s + ";";
+}
+output += symptomList;
+// write output to file
+out.write(output + "\n");
+}
+out.close();
+} catch (IOException ex) {
+ex.printStackTrace();
+}
+}
+});
+
+}
+
+private void initEditPatientInfomation() {
+EditPatientInfomationFrame = new JFrame("Edit Patient");
+EditPatientInfomationFrame.setBounds(100, 100, 500, 600);
+EditPatientInfomationFrame
+.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+EditPatientInfomationFrame.getContentPane().setLayout(null);
+EditPatientInfomationFrame.setVisible(false);
+
+lblPatientFirstName = new JLabel("First Name:");
+lblPatientFirstName.setBounds(20, 20, 125, 20);
+EditPatientInfomationFrame.getContentPane().add(lblPatientFirstName);
+
+txtTextBoxFirstName = new JTextField();
+txtTextBoxFirstName.setBounds(lblPatientFirstName.getX()
++ lblPatientFirstName.getWidth() + 10,
+lblPatientFirstName.getY(), 290, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxFirstName);
+
+lblPatientLastName = new JLabel("Last Name:");
+lblPatientLastName.setBounds(20, lblPatientFirstName.getY()
++ lblPatientFirstName.getHeight() + 10, 125, 20);
+EditPatientInfomationFrame.getContentPane().add(lblPatientLastName);
+
+txtTextBoxLastName = new JTextField();
+txtTextBoxLastName.setBounds(lblPatientLastName.getX()
++ lblPatientLastName.getWidth() + 10,
+lblPatientLastName.getY(), 290, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxLastName);
+
+lblPatientAddress = new JLabel("Address:");
+lblPatientAddress.setBounds(20, lblPatientLastName.getY()
++ lblPatientLastName.getHeight() + 10, 125, 20);
+EditPatientInfomationFrame.getContentPane().add(lblPatientAddress);
+
+txtTextBoxAddress = new JTextField();
+txtTextBoxAddress.setBounds(lblPatientAddress.getX()
++ lblPatientAddress.getWidth() + 10, lblPatientAddress.getY(),
+290, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxAddress);
+
+lblPatientCity = new JLabel("City:");
+lblPatientCity.setBounds(20, lblPatientAddress.getY()
++ lblPatientAddress.getHeight() + 10, 125, 20);
+EditPatientInfomationFrame.getContentPane().add(lblPatientCity);
+
+txtTextBoxCity = new JTextField();
+txtTextBoxCity.setBounds(
+lblPatientCity.getX() + lblPatientCity.getWidth() + 10,
+lblPatientCity.getY(), 290, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxCity);
+
+lblPatientState = new JLabel("State:");
+lblPatientState.setBounds(20,
+lblPatientCity.getY() + lblPatientCity.getHeight() + 10, 125,
+20);
+EditPatientInfomationFrame.getContentPane().add(lblPatientState);
+
+txtTextBoxState = new JTextField();
+txtTextBoxState.setBounds(
+lblPatientState.getX() + lblPatientState.getWidth() + 10,
+lblPatientState.getY(), 75, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxState);
+
+lblPatientZip = new JLabel("Zip:");
+lblPatientZip.setBounds(
+txtTextBoxState.getX() + txtTextBoxState.getWidth() + 10,
+txtTextBoxState.getY(), 50, 30);
+EditPatientInfomationFrame.getContentPane().add(lblPatientZip);
+
+txtTextBoxZip = new JTextField();
+txtTextBoxZip.setBounds(lblPatientZip.getX() + lblPatientZip.getWidth()
++ 10, lblPatientZip.getY(), 125, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxZip);
+
+lblPatientSSN = new JLabel("SSN:");
+lblPatientSSN.setBounds(20,
+lblPatientState.getY() + lblPatientState.getHeight() + 10, 125,
+20);
+EditPatientInfomationFrame.getContentPane().add(lblPatientSSN);
+
+txtTextBoxSSN = new JTextField();
+txtTextBoxSSN.setBounds(lblPatientSSN.getX() + lblPatientSSN.getWidth()
++ 10, lblPatientSSN.getY(), 290, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxSSN);
+
+lblPatientHeight = new JLabel("Height:");
+lblPatientHeight.setBounds(20,
+lblPatientSSN.getY() + lblPatientSSN.getHeight() + 10, 125, 20);
+EditPatientInfomationFrame.getContentPane().add(lblPatientHeight);
+
+txtTextBoxEnterHeight = new JTextField();
+txtTextBoxEnterHeight.setBounds(lblPatientHeight.getX()
++ lblPatientHeight.getWidth() + 10, lblPatientHeight.getY(),
+50, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxEnterHeight);
+
+lblPatientWeight = new JLabel("Weight:");
+lblPatientWeight.setBounds(txtTextBoxEnterHeight.getX()
++ txtTextBoxEnterHeight.getWidth() + 10,
+txtTextBoxEnterHeight.getY(), 50, 30);
+EditPatientInfomationFrame.getContentPane().add(lblPatientWeight);
+
+txtTextBoxPatientWeight = new JTextField();
+txtTextBoxPatientWeight.setBounds(lblPatientWeight.getX()
++ lblPatientWeight.getWidth() + 10, lblPatientWeight.getY(),
+50, 30);
+EditPatientInfomationFrame.getContentPane()
+.add(txtTextBoxPatientWeight);
+
+lblPatientGender = new JLabel("Gender:");
+lblPatientGender.setBounds(txtTextBoxPatientWeight.getX()
++ txtTextBoxPatientWeight.getWidth() + 10,
+txtTextBoxPatientWeight.getY(), 50, 30);
+EditPatientInfomationFrame.getContentPane().add(lblPatientGender);
+
+txtTextBoxGender = new JTextField();
+txtTextBoxGender.setBounds(
+lblPatientGender.getX() + lblPatientGender.getWidth() + 10,
+lblPatientGender.getY(), 50, 30);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxGender);
+
+lblPatientSymptomsList = new JLabel("Symptoms:");
+lblPatientSymptomsList.setBounds(20, lblPatientHeight.getY()
++ lblPatientHeight.getHeight() + 10, 125, 20);
+EditPatientInfomationFrame.getContentPane().add(lblPatientSymptomsList);
+
+txtTextBoxEPPSymptoms = new JTextField();
+txtTextBoxEPPSymptoms.setBounds(lblPatientSymptomsList.getX()
++ lblPatientSymptomsList.getWidth() + 10,
+lblPatientSymptomsList.getY(), 290, 100);
+EditPatientInfomationFrame.getContentPane().add(txtTextBoxEPPSymptoms);
+
+btnPatientEditSave = new JButton("Save");
+btnPatientEditSave.setBounds(
+lblPatientGender.getX(),
+txtTextBoxEPPSymptoms.getY()
++ txtTextBoxEPPSymptoms.getHeight() + 10, 50, 20);
+EditPatientInfomationFrame.getContentPane().add(btnPatientEditSave);
+btnPatientEditSave.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+Patient p = (Patient) cboPatient.getSelectedItem();
+p.setFirstName(txtTextBoxFirstName.getText());
+p.setLastName(txtTextBoxLastName.getText());
+p.setStreetAddress(txtTextBoxAddress.getText());
+p.setCity(txtTextBoxCity.getText());
+p.setState(txtTextBoxState.getText());
+p.setZip(txtTextBoxZip.getText());
+p.setSsn(txtTextBoxSSN.getText());
+p.setHeight(Double.parseDouble(txtTextBoxEnterHeight.getText()));
+p.setWeight(Double.parseDouble(txtTextBoxPatientWeight
+.getText()));
+p.setGender(txtTextBoxGender.getText().charAt(0));
+
+}
+
+});
+btnPatientEditCancel = new JButton("Cancel");
+btnPatientEditCancel.setBounds(btnPatientEditSave.getX()
++ btnPatientEditSave.getWidth() + 10,
+btnPatientEditSave.getY(), 50, 20);
+EditPatientInfomationFrame.getContentPane().add(btnPatientEditCancel);
+btnPatientEditCancel.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+System.out.println("You just clicked Cancel!");
+EditPatientInfomationFrame.setVisible(false);
+}
+});
+
+}
+}

@@ -1,0 +1,171 @@
+package whatever;
+
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+//import javax.swing.JOptionPane;
+
+
+public class Patient extends User {
+
+/*private String patientID;
+private String firstName;
+private String lastName;
+private String ssn;
+private char gender;*/
+private ArrayList<String> symptom = new ArrayList<String>();;
+private double weight;
+private double height;
+private ArrayList<Diagnoses> diagnoses = new ArrayList<Diagnoses>();
+private ArrayList<Medication> medication = new ArrayList<Medication>();
+
+
+
+public Patient(String firstName, String lastName, String ssn, char gender,  double w,double tall) {
+super (firstName,lastName,ssn, gender);
+// links the private info above to the items below
+/*firstName = fName;
+lastName = lName;
+ssn = s;
+gender = mOrf;*/
+weight = w;
+height = tall;
+
+// builds the patID from the ssn and name strings
+
+
+}
+
+
+public String toString(){
+
+
+
+
+return getLastName() +","+ getFirstName();
+}
+
+
+
+
+
+// System.out.println(patID);
+
+public double caluateBMI() {
+
+// BMI = ( weight (lb) / [height (in)]2 ) x 703
+// used to get the bmi from the given formula
+double bmi = weight / Math.pow(height, 2) * 703;
+return bmi;
+
+}
+
+public String getProfile() {
+
+// By building the list like this make it so I can add more later on
+/*
+ * symptom.add("Headache"); symptom.add("Cough"); symptom.add("Fever");
+ */
+
+String patientProfile = "Name: " + getLastName() + ", "
++ getFirstName() + "\n";
+patientProfile = patientProfile + "SSN: " + getSsn() + "\n";
+
+patientProfile = patientProfile + "BMI: " + caluateBMI() + "\n";
+
+patientProfile = patientProfile + "Patient ID:" + super.getUserID() + "\n";
+
+for (Diagnoses d : getDiagnoses()) {
+
+if (d != null) {
+patientProfile = patientProfile + "Diagnoses: " + d.getName()
++ "\n";
+} else {
+patientProfile = patientProfile + "Diagnoses: none\n";
+}
+}
+for (Medication a : getMedication()) {
+if (a != null) {
+patientProfile = patientProfile + "Medication: " + a.getName()
++ "\n";
+} else {
+patientProfile = patientProfile + "Medication: none\n";
+}
+}
+// JOptionPane.showMessageDialog(null, patientProfile);
+
+return patientProfile;
+}
+
+// setting the getters and setters for the info
+// below----------------------------------------------------------------------
+
+public ArrayList<String> getSymptom() {
+return symptom;
+}
+
+public void setSymptom(String newSymptom) {
+boolean exists = false;
+for(String s : this.symptom){
+if(s.equalsIgnoreCase(newSymptom)){
+exists = true;
+}
+}
+if(!exists){
+this.symptom.add(newSymptom);
+}
+}
+
+public double getWeight() {
+return weight;
+}
+
+public void setWeight(double weight) {
+this.weight = weight;
+}
+
+public double getHeight() {
+return height;
+}
+
+public void setHeight(double height) {
+this.height = height;
+}
+
+
+public ArrayList<Diagnoses> getDiagnoses() {
+return diagnoses;
+}
+
+public void setDiagnoses(Diagnoses diagnoses) {
+boolean exists = false;
+for(Diagnoses d : this.diagnoses){
+if(d.getDignosesID() == diagnoses.getDignosesID()){
+exists = true;
+}
+}
+if(!exists){
+this.diagnoses.add(diagnoses);
+}
+
+}
+
+public ArrayList<Medication> getMedication() {
+return medication;
+}
+
+public void setMedication(Medication medication) {
+boolean exists = false;
+for(Medication m : this.medication){
+if(m.getMedication() == medication.getMedication()){
+exists = true;
+}
+}
+if(!exists){
+this.medication.add(medication);
+}
+
+}
+
+}// end of class
